@@ -47,6 +47,10 @@ export const configure = (instanceConfig) => {
         menu,
         quickbars_selection_toolbar: addQuickbarsToolbarItem(
             instanceConfig.quickbars_selection_toolbar,
+            '|',
+            'alignleft',
+            'aligncenter',
+            'alignright',
             COMMAND_ALIGNJUSTIFY,
         ),
     };
