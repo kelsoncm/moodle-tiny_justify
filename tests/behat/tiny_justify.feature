@@ -1,4 +1,4 @@
-@editor @editor_tiny @tiny_justify @javascript
+@editor @editor_tiny @tiny @tiny_justify @javascript
 Feature: Use the TinyMCE editor justify button
   In order to format text as justified
   As a teacher
