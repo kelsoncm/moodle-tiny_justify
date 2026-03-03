@@ -36,16 +36,9 @@ import {COMMAND_ALIGNJUSTIFY} from './commands';
  * @returns {object} The updated instance configuration.
  */
 export const configure = (instanceConfig) => {
-    // Update menu - add alignjustify to the align section
-    let menu = instanceConfig.menu;
-    if (menu && menu.format && menu.format.items) {
-        // Replace 'align' with 'align alignjustify' to add it to the align submenu
-        menu.format.items = menu.format.items.replace(/\balign\b/, 'align alignjustify');
-    }
-    
     return {
         toolbar: addToolbarButtons(instanceConfig.toolbar, 'content', [COMMAND_ALIGNJUSTIFY]),
-        menu,
+        menu: instanceConfig.menu,
         quickbars_selection_toolbar: addQuickbarsToolbarItem(
             instanceConfig.quickbars_selection_toolbar,
             COMMAND_ALIGNJUSTIFY,
