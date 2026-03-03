@@ -28,12 +28,10 @@ import {get_string as getString} from 'core/str';
 export const COMMAND_ALIGNJUSTIFY = 'alignjustify';
 export const MENU_ALIGN = 'tiny_justify_align';
 
-// Icon SVG for justify button (Bootstrap text-justify).
-const ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">' +
-    '<path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>' +
-    '<path fill-rule="evenodd" d="M2 9.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>' +
-    '<path fill-rule="evenodd" d="M2 6.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>' +
-    '<path fill-rule="evenodd" d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>' +
+// Icon SVG for justify button (matches TinyMCE's native alignment icon style).
+const ICON_SVG = '<svg width="24" height="24">' +
+    '<path d="M5 5h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Zm0 4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 1 1 0-2Z' +
+    'm0 4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Zm0 4h14c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1 0-2Z" fill-rule="evenodd"/>' +
     '</svg>';
 
 const ICON_NAME = 'tiny_justify_icon';
