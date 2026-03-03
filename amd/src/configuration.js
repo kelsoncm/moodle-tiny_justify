@@ -25,7 +25,7 @@
 
 import {
     addQuickbarsToolbarItem,
-    addToolbarButtons,
+    addToolbarButton,
 } from 'editor_tiny/utils';
 import {COMMAND_ALIGNJUSTIFY, MENU_ALIGN} from './commands';
 
@@ -43,7 +43,7 @@ export const configure = (instanceConfig) => {
     }
 
     return {
-        toolbar: addToolbarButtons(instanceConfig.toolbar, 'content', [COMMAND_ALIGNJUSTIFY]),
+        toolbar: addToolbarButton(instanceConfig.toolbar, 'alignment', COMMAND_ALIGNJUSTIFY, 'alignright'),
         menu,
         quickbars_selection_toolbar: addQuickbarsToolbarItem(
             instanceConfig.quickbars_selection_toolbar,
