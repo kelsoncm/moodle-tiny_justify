@@ -81,7 +81,7 @@ jobs:
             -e MYSQL_CHARACTER_SET_SERVER=utf8mb4 \
             -e MYSQL_COLLATION_SERVER=utf8mb4_unicode_ci \
             -p 3306:3306 \
-            mariadb:10.6
+            mariadb:10.11
           sleep 10
 
       - name: Initialise moodle-plugin-ci
