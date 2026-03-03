@@ -78,8 +78,9 @@ jobs:
           generate_release_notes: true
 
       - name: Upload to Moodle Plugin Directory
-        if: ${{ secrets.MOODLE_DIRECTORY_TOKEN != '' }}
+        if: ${{ env.HAS_MOODLE_TOKEN == 'true' }}
         env:
+          HAS_MOODLE_TOKEN: ${{ secrets.MOODLE_DIRECTORY_TOKEN != '' }}
           MOODLE_DIRECTORY_TOKEN: ${{ secrets.MOODLE_DIRECTORY_TOKEN }}
         run: |
           RESPONSE=$(curl -s -w "\n%{http_code}" \
