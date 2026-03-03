@@ -1,0 +1,50 @@
+##
+# GitHub Actions workflow: generate an installable Moodle plugin ZIP on every tag push.
+#
+# Usage:
+#   git tag -a v1.0.0 -m "Release 1.0.0"
+#   git push origin v1.0.0
+#
+# The resulting tiny_justify.zip can be uploaded directly to
+# Site administration → Plugins → Install plugins in Moodle.
+##
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build and release plugin ZIP
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build plugin ZIP
+        run: |
+          # Create a clean directory named after the plugin so that unzipping inside
+          # Moodle's admin interface lands in the correct location.
+          mkdir -p /tmp/build/tiny_justify
+
+          # Copy all plugin files, excluding VCS and CI-only directories.
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            . /tmp/build/tiny_justify/
+
+          # Create the ZIP from the parent directory so the archive contains the
+          # top-level tiny_justify/ folder, as Moodle's plugin installer expects.
+          cd /tmp/build
+          zip -r "$GITHUB_WORKSPACE/tiny_justify.zip" tiny_justify/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: tiny_justify.zip
+          generate_release_notes: true
