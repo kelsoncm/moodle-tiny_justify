@@ -27,7 +27,7 @@ import {
     addQuickbarsToolbarItem,
     addToolbarButtons,
 } from 'editor_tiny/utils';
-import {COMMAND_ALIGNJUSTIFY} from './commands';
+import {COMMAND_ALIGNJUSTIFY, MENU_ALIGN} from './commands';
 
 /**
  * Configure the TinyMCE instance for this plugin.
@@ -36,14 +36,12 @@ import {COMMAND_ALIGNJUSTIFY} from './commands';
  * @returns {object} The updated instance configuration.
  */
 export const configure = (instanceConfig) => {
-    // Update menu configuration to include alignjustify in the align menu
+    // Replace the built-in 'align' submenu with our custom one that includes alignjustify.
     let menu = instanceConfig.menu;
     if (menu && menu.format && menu.format.items) {
-        // The format menu items are space-separated strings
-        // We need to add alignjustify after 'align' to include it in the align submenu
-        menu.format.items = menu.format.items.replace(/\balign(?!\w)/g, `align | ${COMMAND_ALIGNJUSTIFY}`);
+        menu.format.items = menu.format.items.replace(/\balign(?!\w)/g, MENU_ALIGN);
     }
-    
+
     return {
         toolbar: addToolbarButtons(instanceConfig.toolbar, 'content', [COMMAND_ALIGNJUSTIFY]),
         menu,

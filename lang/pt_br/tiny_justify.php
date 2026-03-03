@@ -22,7 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['aligncenter'] = 'Centralizar';
 $string['alignjustify'] = 'Justificar';
+$string['alignleft'] = 'Alinhar à esquerda';
+$string['alignmenu'] = 'Alinhar';
+$string['alignright'] = 'Alinhar à direita';
 $string['helplinktext'] = 'Justificar';
 $string['pluginname'] = 'Justificar';
 $string['alignjustifymenu'] = 'Justificar texto';

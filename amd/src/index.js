@@ -25,4 +25,4 @@
 
 export {pluginMetadata} from './plugin';
 export {configure} from './configuration';
-export {getSetup, COMMAND_ALIGNJUSTIFY} from './commands';
+export {getSetup, COMMAND_ALIGNJUSTIFY, MENU_ALIGN} from './commands';

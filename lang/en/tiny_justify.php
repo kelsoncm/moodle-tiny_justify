@@ -22,8 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['aligncenter'] = 'Align center';
 $string['alignjustify'] = 'Justify';
 $string['alignjustifymenu'] = 'Justify text';
+$string['alignleft'] = 'Align left';
+$string['alignmenu'] = 'Align';
+$string['alignright'] = 'Align right';
 $string['helplinktext'] = 'Justify';
 $string['pluginname'] = 'Justify';
 $string['privacy:metadata'] = 'The tiny_justify plugin does not store any personal data.';

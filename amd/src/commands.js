@@ -26,6 +26,7 @@
 import {get_string as getString} from 'core/str';
 
 export const COMMAND_ALIGNJUSTIFY = 'alignjustify';
+export const MENU_ALIGN = 'tiny_justify_align';
 
 // Icon SVG for justify button (Bootstrap text-justify).
 const ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">' +
@@ -43,8 +44,14 @@ const ICON_NAME = 'tiny_justify_icon';
  * @returns {Function} Setup function for each TinyMCE editor instance.
  */
 export const getSetup = async() => {
-    const tooltip = await getString('alignjustify', 'tiny_justify');
-    const menutext = await getString('alignjustifymenu', 'tiny_justify');
+    const [tooltip, menutext, aligntext, alignleftText, aligncenterText, alignrightText] = await Promise.all([
+        getString('alignjustify', 'tiny_justify'),
+        getString('alignjustifymenu', 'tiny_justify'),
+        getString('alignmenu', 'tiny_justify'),
+        getString('alignleft', 'tiny_justify'),
+        getString('aligncenter', 'tiny_justify'),
+        getString('alignright', 'tiny_justify'),
+    ]);
     const onAction = (editor) => () => editor.execCommand('JustifyFull');
     const onSetup = (editor) => (api) => {
         editor.on('NodeChange', () => {
@@ -64,13 +71,51 @@ export const getSetup = async() => {
             onSetup: onSetup(editor),
         });
 
-        // Register a toggle menu item - TinyMCE will automatically add this to the align submenu
-        // if the button is included in the menu.align configuration
+        // Register toggle menu items for all alignment options.
+        // TinyMCE only registers these as toolbar buttons, not menu items,
+        // so we need to register them for our custom nested menu.
+        editor.ui.registry.addToggleMenuItem('alignleft', {
+            text: alignleftText,
+            icon: 'align-left',
+            onAction: () => editor.execCommand('JustifyLeft'),
+            onSetup: (api) => {
+                editor.on('NodeChange', () => {
+                    api.setActive(editor.queryCommandState('JustifyLeft'));
+                });
+            },
+        });
+        editor.ui.registry.addToggleMenuItem('aligncenter', {
+            text: aligncenterText,
+            icon: 'align-center',
+            onAction: () => editor.execCommand('JustifyCenter'),
+            onSetup: (api) => {
+                editor.on('NodeChange', () => {
+                    api.setActive(editor.queryCommandState('JustifyCenter'));
+                });
+            },
+        });
+        editor.ui.registry.addToggleMenuItem('alignright', {
+            text: alignrightText,
+            icon: 'align-right',
+            onAction: () => editor.execCommand('JustifyRight'),
+            onSetup: (api) => {
+                editor.on('NodeChange', () => {
+                    api.setActive(editor.queryCommandState('JustifyRight'));
+                });
+            },
+        });
         editor.ui.registry.addToggleMenuItem(COMMAND_ALIGNJUSTIFY, {
             text: menutext,
             icon: ICON_NAME,
             onAction: onAction(editor),
             onSetup: onSetup(editor),
+        });
+
+        // Register a custom nested menu item that replaces the built-in 'align' submenu
+        // to include 'alignjustify' inside it.
+        editor.ui.registry.addNestedMenuItem(MENU_ALIGN, {
+            text: aligntext,
+            getSubmenuItems: () => 'alignleft aligncenter alignright alignjustify',
         });
     };
 };
