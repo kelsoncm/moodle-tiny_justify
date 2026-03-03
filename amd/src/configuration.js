@@ -36,9 +36,17 @@ import {COMMAND_ALIGNJUSTIFY} from './commands';
  * @returns {object} The updated instance configuration.
  */
 export const configure = (instanceConfig) => {
+    // Update menu configuration to include alignjustify in the align menu
+    let menu = instanceConfig.menu;
+    if (menu && menu.format && menu.format.items) {
+        // The format menu items are space-separated strings
+        // We need to add alignjustify after 'align' to include it in the align submenu
+        menu.format.items = menu.format.items.replace(/\balign(?!\w)/g, `align | ${COMMAND_ALIGNJUSTIFY}`);
+    }
+    
     return {
         toolbar: addToolbarButtons(instanceConfig.toolbar, 'content', [COMMAND_ALIGNJUSTIFY]),
-        menu: instanceConfig.menu,
+        menu,
         quickbars_selection_toolbar: addQuickbarsToolbarItem(
             instanceConfig.quickbars_selection_toolbar,
             COMMAND_ALIGNJUSTIFY,

@@ -64,41 +64,13 @@ export const getSetup = async() => {
             onSetup: onSetup(editor),
         });
 
-        // Register a toggle menu item for the menu.
+        // Register a toggle menu item - TinyMCE will automatically add this to the align submenu
+        // if the button is included in the menu.align configuration
         editor.ui.registry.addToggleMenuItem(COMMAND_ALIGNJUSTIFY, {
             text: menutext,
             icon: ICON_NAME,
             onAction: onAction(editor),
             onSetup: onSetup(editor),
         });
-
-        // Hook into menu initialization to add alignjustify to the align submenu
-        const modifyAlignMenu = () => {
-            try {
-                const allMenuItems = editor.ui.registry.getAll().menuItems;
-                if (allMenuItems.align) {
-                    const originalAlign = allMenuItems.align;
-                    editor.ui.registry.addNestedMenuItem('align', {
-                        text: originalAlign.text || 'Align',
-                        getSubmenuItems: () => {
-                            const submenuItems = typeof originalAlign.getSubmenuItems === 'function'
-                                ? originalAlign.getSubmenuItems()
-                                : [];
-                            // Check if alignjustify is already in the list
-                            if (!submenuItems.some(item => item === COMMAND_ALIGNJUSTIFY || (item.text && item.text.includes('justif')))) {
-                                submenuItems.push(COMMAND_ALIGNJUSTIFY);
-                            }
-                            return submenuItems;
-                        },
-                    });
-                }
-            } catch (e) {
-                // Silently fail if unable to modify align menu
-            }
-        };
-
-        // Try to modify on init and after a slight delay
-        modifyAlignMenu();
-        editor.on('init', modifyAlignMenu);
     };
 };
