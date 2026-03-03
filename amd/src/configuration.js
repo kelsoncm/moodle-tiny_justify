@@ -23,7 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {addToolbarButtons} from 'editor_tiny/utils';
+import {
+    addQuickbarsToolbarItem,
+    addToolbarButtons,
+} from 'editor_tiny/utils';
 import {COMMAND_ALIGNJUSTIFY} from './commands';
 
 /**
@@ -35,5 +38,10 @@ import {COMMAND_ALIGNJUSTIFY} from './commands';
 export const configure = (instanceConfig) => {
     return {
         toolbar: addToolbarButtons(instanceConfig.toolbar, 'content', [COMMAND_ALIGNJUSTIFY]),
+        menu: instanceConfig.menu,
+        quickbars_selection_toolbar: addQuickbarsToolbarItem(
+            instanceConfig.quickbars_selection_toolbar,
+            COMMAND_ALIGNJUSTIFY,
+        ),
     };
 };
