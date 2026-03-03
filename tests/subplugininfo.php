@@ -32,13 +32,14 @@ require_once($CFG->dirroot . '/lib/editor/tiny/lib.php');
  * Subplugin info test class for tiny_justify.
  */
 class tiny_justify_subplugininfo_test extends advanced_testcase {
-
     /**
      * Verify the plugin class exists and implements required interfaces.
      */
     public function test_plugin_class_exists(): void {
-        $this->assertTrue(class_exists('tiny_justify\plugininfo'),
-            'Plugin class tiny_justify\plugininfo must exist.');
+        $this->assertTrue(
+            class_exists('tiny_justify\plugininfo'),
+            'Plugin class tiny_justify\plugininfo must exist.'
+        );
     }
 
     /**
@@ -68,8 +69,11 @@ class tiny_justify_subplugininfo_test extends advanced_testcase {
      */
     public function test_get_available_buttons(): void {
         $buttons = \tiny_justify\plugininfo::get_available_buttons();
-        $this->assertContains('tiny_justify/alignjustify', $buttons,
-            'get_available_buttons() must include "tiny_justify/alignjustify".');
+        $this->assertContains(
+            'tiny_justify/alignjustify',
+            $buttons,
+            'get_available_buttons() must include "tiny_justify/alignjustify".'
+        );
     }
 
     /**
@@ -88,7 +92,10 @@ class tiny_justify_subplugininfo_test extends advanced_testcase {
      */
     public function test_get_available_menuitems(): void {
         $items = \tiny_justify\plugininfo::get_available_menuitems();
-        $this->assertContains('tiny_justify/alignjustify', $items,
-            'get_available_menuitems() must include "tiny_justify/alignjustify".');
+        $this->assertContains(
+            'tiny_justify/alignjustify',
+            $items,
+            'get_available_menuitems() must include "tiny_justify/alignjustify".'
+        );
     }
 }
