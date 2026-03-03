@@ -22,24 +22,24 @@
  */
 
 import {getTinyMCE} from 'editor_tiny/loader';
-import {configure} from './configuration';
+import * as Configuration from './configuration';
 import {getSetup} from './commands';
 
 const pluginName = 'tiny_justify/plugin';
 
 export const pluginMetadata = {
     name: pluginName,
-    version: '2026030300',
+    version: '2026030309',
 };
 
 // eslint-disable-next-line no-async-promise-executor
 export default new Promise(async(resolve) => {
-    const [tinyMCE] = await Promise.all([getTinyMCE()]);
+    const [tinyMCE, setupCommands] = await Promise.all([getTinyMCE(), getSetup()]);
 
     tinyMCE.PluginManager.add(pluginName, (editor) => {
-        getSetup(editor);
+        setupCommands(editor);
         return pluginMetadata;
     });
 
-    resolve([configure, pluginMetadata]);
+    resolve([pluginName, Configuration]);
 });

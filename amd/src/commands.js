@@ -16,7 +16,7 @@
 /**
  * Tiny justify commands for Moodle.
  *
- * Registers the alignjustify toolbar button and applies text-align: justify.
+ * Registers the alignjustify toolbar button and menu item.
  *
  * @module     tiny_justify/commands
  * @copyright  2026 CTE-ZL IFRN
@@ -27,7 +27,7 @@ import {get_string as getString} from 'core/str';
 
 export const COMMAND_ALIGNJUSTIFY = 'alignjustify';
 
-// SVG icon path data for the justify button (Bootstrap text-justify icon, 16×16).
+// Icon SVG for justify button (Bootstrap text-justify).
 const ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">' +
     '<path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>' +
     '<path fill-rule="evenodd" d="M2 9.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>' +
@@ -35,48 +35,70 @@ const ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
     '<path fill-rule="evenodd" d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>' +
     '</svg>';
 
-/**
- * Register the alignjustify formatter and toolbar button.
- *
- * @param {object} editor The TinyMCE editor instance.
- */
-const registerButton = async(editor) => {
-    const tooltip = await getString('alignjustify', 'tiny_justify');
-
-    // Register a custom formatter so we can apply text-align: justify.
-    editor.formatter.register(COMMAND_ALIGNJUSTIFY, {
-        block: 'p',
-        styles: {'text-align': 'justify'},
-        remove: 'all',
-    });
-
-    // Register the icon.
-    editor.ui.registry.addIcon('tinyjustify', ICON_SVG);
-
-    // Register a toggle button so it shows the active state when the caret is inside justified text.
-    editor.ui.registry.addToggleButton(COMMAND_ALIGNJUSTIFY, {
-        icon: 'tinyjustify',
-        tooltip,
-        onAction: () => {
-            editor.execCommand('JustifyFull');
-        },
-        onSetup: (api) => {
-            const nodeChangeHandler = () => {
-                api.setActive(editor.formatter.match(COMMAND_ALIGNJUSTIFY));
-            };
-            editor.on('NodeChange', nodeChangeHandler);
-            return () => {
-                editor.off('NodeChange', nodeChangeHandler);
-            };
-        },
-    });
-};
+const ICON_NAME = 'tiny_justify_icon';
 
 /**
  * Set up the commands for this plugin.
  *
- * @param {object} editor The TinyMCE editor instance.
+ * @returns {Function} Setup function for each TinyMCE editor instance.
  */
-export const getSetup = (editor) => {
-    registerButton(editor);
+export const getSetup = async() => {
+    const tooltip = await getString('alignjustify', 'tiny_justify');
+    const menutext = await getString('alignjustifymenu', 'tiny_justify');
+    const onAction = (editor) => () => editor.execCommand('JustifyFull');
+    const onSetup = (editor) => (api) => {
+        editor.on('NodeChange', () => {
+            api.setActive(editor.queryCommandState('JustifyFull'));
+        });
+    };
+    const registerAlignSubmenuItem = (editor) => {
+        const menuItems = editor.ui.registry.getAll().menuItems;
+        const alignMenu = menuItems.align;
+        if (alignMenu && typeof alignMenu.getSubmenuItems === 'function') {
+            editor.ui.registry.addNestedMenuItem('align', {
+                text: alignMenu.text,
+                getSubmenuItems: () => {
+                    const submenuItems = alignMenu.getSubmenuItems();
+                    return [
+                        ...submenuItems,
+                        {
+                            type: 'togglemenuitem',
+                            text: menutext,
+                            icon: ICON_NAME,
+                            onAction: onAction(editor),
+                            onSetup: onSetup(editor),
+                        },
+                    ];
+                },
+            });
+        }
+    };
+
+    return (editor) => {
+        // Register the custom icon.
+        editor.ui.registry.addIcon(ICON_NAME, ICON_SVG);
+
+        // Register a toggle button for the toolbar.
+        editor.ui.registry.addToggleButton(COMMAND_ALIGNJUSTIFY, {
+            tooltip,
+            icon: ICON_NAME,
+            onAction: onAction(editor),
+            onSetup: onSetup(editor),
+        });
+
+        // Register a toggle menu item for the Format menu.
+        editor.ui.registry.addToggleMenuItem(COMMAND_ALIGNJUSTIFY, {
+            text: menutext,
+            icon: ICON_NAME,
+            onAction: onAction(editor),
+            onSetup: onSetup(editor),
+        });
+
+        registerAlignSubmenuItem(editor);
+        editor.on('init', () => {
+            setTimeout(() => {
+                registerAlignSubmenuItem(editor);
+            }, 0);
+        });
+    };
 };

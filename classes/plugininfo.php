@@ -29,11 +29,12 @@ use editor_tiny\editor;
 use editor_tiny\plugin;
 use editor_tiny\plugin_with_buttons;
 use editor_tiny\plugin_with_configuration;
+use editor_tiny\plugin_with_menuitems;
 
 /**
  * Tiny justify plugin for Moodle.
  */
-class plugin extends \editor_tiny\plugin implements plugin_with_buttons, plugin_with_configuration {
+class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menuitems, plugin_with_configuration {
 
     /**
      * Whether the plugin is enabled for this context.
@@ -65,11 +66,11 @@ class plugin extends \editor_tiny\plugin implements plugin_with_buttons, plugin_
     }
 
     /**
-     * Returns the default toolbar configuration.
+     * Returns the menu items provided by this plugin.
      *
      * @return array
      */
-    public static function get_default_configuration(): array {
+    public static function get_available_menuitems(): array {
         return [
             'tiny_justify/alignjustify',
         ];

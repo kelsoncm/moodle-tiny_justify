@@ -16,14 +16,17 @@
 /**
  * Tiny justify configuration for Moodle.
  *
- * Adds the alignjustify button to the content toolbar group.
+ * Adds the alignjustify button to the toolbar and menu.
  *
  * @module     tiny_justify/configuration
  * @copyright  2026 CTE-ZL IFRN
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import {addToolbarButtons} from 'editor_tiny/utils';
+import {
+    addQuickbarsToolbarItem,
+    addToolbarButton,
+} from 'editor_tiny/utils';
 import {COMMAND_ALIGNJUSTIFY} from './commands';
 
 /**
@@ -33,7 +36,19 @@ import {COMMAND_ALIGNJUSTIFY} from './commands';
  * @returns {object} The updated instance configuration.
  */
 export const configure = (instanceConfig) => {
+    // Add button to the align toolbar section, together with other alignment buttons.
+    const toolbar = addToolbarButton(
+        instanceConfig.toolbar,
+        'align',
+        COMMAND_ALIGNJUSTIFY
+    );
+
     return {
-        toolbar: addToolbarButtons(instanceConfig.toolbar, 'content', [COMMAND_ALIGNJUSTIFY]),
+        menu: instanceConfig.menu,
+        toolbar,
+        quickbars_selection_toolbar: addQuickbarsToolbarItem(
+            instanceConfig.quickbars_selection_toolbar,
+            COMMAND_ALIGNJUSTIFY,
+        ),
     };
 };

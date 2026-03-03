@@ -37,8 +37,8 @@ class tiny_justify_subplugininfo_test extends advanced_testcase {
      * Verify the plugin class exists and implements required interfaces.
      */
     public function test_plugin_class_exists(): void {
-        $this->assertTrue(class_exists('tiny_justify\plugin'),
-            'Plugin class tiny_justify\plugin must exist.');
+        $this->assertTrue(class_exists('tiny_justify\plugininfo'),
+            'Plugin class tiny_justify\plugininfo must exist.');
     }
 
     /**
@@ -47,8 +47,8 @@ class tiny_justify_subplugininfo_test extends advanced_testcase {
     public function test_implements_plugin_with_buttons(): void {
         $this->assertInstanceOf(
             \editor_tiny\plugin_with_buttons::class,
-            new \tiny_justify\plugin(),
-            'tiny_justify\plugin must implement editor_tiny\plugin_with_buttons.'
+            new \tiny_justify\plugininfo(),
+            'tiny_justify\plugininfo must implement editor_tiny\plugin_with_buttons.'
         );
     }
 
@@ -58,8 +58,8 @@ class tiny_justify_subplugininfo_test extends advanced_testcase {
     public function test_implements_plugin_with_configuration(): void {
         $this->assertInstanceOf(
             \editor_tiny\plugin_with_configuration::class,
-            new \tiny_justify\plugin(),
-            'tiny_justify\plugin must implement editor_tiny\plugin_with_configuration.'
+            new \tiny_justify\plugininfo(),
+            'tiny_justify\plugininfo must implement editor_tiny\plugin_with_configuration.'
         );
     }
 
@@ -67,17 +67,28 @@ class tiny_justify_subplugininfo_test extends advanced_testcase {
      * Verify get_available_buttons returns the expected button list.
      */
     public function test_get_available_buttons(): void {
-        $buttons = \tiny_justify\plugin::get_available_buttons();
+        $buttons = \tiny_justify\plugininfo::get_available_buttons();
         $this->assertContains('tiny_justify/alignjustify', $buttons,
             'get_available_buttons() must include "tiny_justify/alignjustify".');
     }
 
     /**
-     * Verify get_default_configuration returns the expected default buttons.
+     * Verify the plugin implements plugin_with_menuitems.
      */
-    public function test_get_default_configuration(): void {
-        $config = \tiny_justify\plugin::get_default_configuration();
-        $this->assertContains('tiny_justify/alignjustify', $config,
-            'get_default_configuration() must include "tiny_justify/alignjustify".');
+    public function test_implements_plugin_with_menuitems(): void {
+        $this->assertInstanceOf(
+            \editor_tiny\plugin_with_menuitems::class,
+            new \tiny_justify\plugininfo(),
+            'tiny_justify\plugininfo must implement editor_tiny\plugin_with_menuitems.'
+        );
+    }
+
+    /**
+     * Verify get_available_menuitems returns the expected item list.
+     */
+    public function test_get_available_menuitems(): void {
+        $items = \tiny_justify\plugininfo::get_available_menuitems();
+        $this->assertContains('tiny_justify/alignjustify', $items,
+            'get_available_menuitems() must include "tiny_justify/alignjustify".');
     }
 }

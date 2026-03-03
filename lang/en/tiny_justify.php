@@ -23,6 +23,7 @@
  */
 
 $string['alignjustify'] = 'Justify';
+$string['alignjustifymenu'] = 'Justify text';
 $string['helplinktext'] = 'Justify';
 $string['pluginname'] = 'Justify';
 $string['privacy:metadata'] = 'The tiny_justify plugin does not store any personal data.';
