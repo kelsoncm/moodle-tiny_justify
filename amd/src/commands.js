@@ -51,28 +51,6 @@ export const getSetup = async() => {
             api.setActive(editor.queryCommandState('JustifyFull'));
         });
     };
-    const registerAlignSubmenuItem = (editor) => {
-        const menuItems = editor.ui.registry.getAll().menuItems;
-        const alignMenu = menuItems.align;
-        if (alignMenu && typeof alignMenu.getSubmenuItems === 'function') {
-            editor.ui.registry.addNestedMenuItem('align', {
-                text: alignMenu.text,
-                getSubmenuItems: () => {
-                    const submenuItems = alignMenu.getSubmenuItems();
-                    return [
-                        ...submenuItems,
-                        {
-                            type: 'togglemenuitem',
-                            text: menutext,
-                            icon: ICON_NAME,
-                            onAction: onAction(editor),
-                            onSetup: onSetup(editor),
-                        },
-                    ];
-                },
-            });
-        }
-    };
 
     return (editor) => {
         // Register the custom icon.
@@ -86,19 +64,12 @@ export const getSetup = async() => {
             onSetup: onSetup(editor),
         });
 
-        // Register a toggle menu item for the Format menu.
+        // Register a toggle menu item for the menu (will appear via configuration).
         editor.ui.registry.addToggleMenuItem(COMMAND_ALIGNJUSTIFY, {
             text: menutext,
             icon: ICON_NAME,
             onAction: onAction(editor),
             onSetup: onSetup(editor),
-        });
-
-        registerAlignSubmenuItem(editor);
-        editor.on('init', () => {
-            setTimeout(() => {
-                registerAlignSubmenuItem(editor);
-            }, 0);
         });
     };
 };
